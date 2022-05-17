@@ -49,3 +49,28 @@ contract Attack {
         return address(this).balance;
     }
 }
+
+contract SafeEthStore {
+    mapping(address => uint) public balances;
+
+    function deposite() public payable {
+        balances[msg.sender] += msg.value;
+    }
+
+    // Use the Checks-Effects-Interactions pattern 
+    // to avoid re-entrancy
+    function withdraw() public {
+        uint bal = balances[msg.sender];
+        require(bal > 0, "Insufficient balance");
+
+        balances[msg.sender] = 0;
+
+        (bool sent, ) = msg.sender.call{value: bal}("");
+        require(sent, "Failed to send eth");
+    }
+
+    // get contract balance
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+}
