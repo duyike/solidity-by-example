@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
+// THIS CONTRACT CONTAINS A BUG - DO NOT USE
 contract EthStore {
     mapping(address => uint) public balances;
 
